@@ -1,0 +1,82 @@
+// Refactor class assignment 009 to include arrays.
+
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+const int SIZE = 4;
+
+// Function Declarations
+void read(string name[SIZE], int grade[SIZE]);
+void write(string name[SIZE], int grade[SIZE]);
+void close();
+
+// File Declarations
+ifstream inNameFile, inGradeFile;
+ofstream outRecordFile;
+
+
+int main()
+{
+	string name[SIZE];
+	int grade[SIZE];
+
+	read(name, grade);
+	write(name, grade);
+	close();
+
+	cout << "Task complete." << endl;
+	return 0;
+}
+
+void read(string name[SIZE], int grade[SIZE])
+{
+	string fileStname = "stname.txt";
+	string fileStgrade = "stgrade.txt";
+
+	inNameFile.open(fileStname);
+	cout << "Accessed file: " << fileStname << endl;
+
+	for (int i = 0; i < SIZE; i++)
+	{
+		getline(inNameFile, name[i]);
+		cout << "Retrieved data: " << name[i] << endl;
+	}
+	cout << endl;
+
+	inGradeFile.open(fileStgrade);
+	cout << "Accessed file: " << fileStgrade << endl;
+
+	for (int i = 0; i < SIZE; i++)
+	{
+		inGradeFile >> grade[i];
+		cout << "Retrieved data: " << grade[i] << endl;
+	}
+	cout << endl;
+}
+
+void write(string name[SIZE], int grade[SIZE])
+{
+	string fileStrecord = "strecord.txt";
+
+	outRecordFile.open("strecord.txt");
+	cout << "Accessed file: " << fileStrecord << endl;
+
+	for (int i = 0; i < SIZE; i++)
+	{
+		string data = name[i] + "\t" + to_string(grade[i]);
+		outRecordFile << data << endl;
+		cout << "Writing data: " << data << endl;
+	}
+	cout << endl;
+}
+
+void close()
+{
+	inNameFile.close();
+	inGradeFile.close();
+	outRecordFile.close();
+	cout << "Closed all files." << endl;
+	cout << endl;
+}
