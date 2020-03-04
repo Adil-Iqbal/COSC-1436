@@ -1,0 +1,67 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+	// Variable Declaration
+	bool inputIsValid = true;
+	char operationChoice, operationSign;
+	int number1, number2, result;
+
+	// User Input
+	cout << "A - Addition" << endl;
+	cout << "S - Subtraction" << endl;
+	cout << "M - Multiplication" << endl;
+	cout << "D - Division" << endl;
+	cout << "O - Modular Division\n" << endl;
+	cout << "Please select one above operations (Enter A, S, M, D, or O):" << endl;
+	cin >> operationChoice;
+
+	cout << "\nEnter your first integer: " << endl;
+	cin >> number1;
+
+	cout << "\nEnter your second integer: " << endl;
+	cin >> number2;
+
+	// Process
+	switch (operationChoice) {
+	case 'A':
+	case 'a':
+		operationSign = '+';
+		result = number1 + number2;
+		break;
+	case 'S':
+	case 's':
+		operationSign = '-';
+		result = number1 - number2;
+		break;
+	case 'M':
+	case 'm':
+		operationSign = '*';
+		result = number1 * number2;
+		break;
+	case 'D':
+	case 'd':
+		operationSign = '/';
+		result = number1 / number2;
+		break;
+	case 'O':
+	case 'o':
+		operationSign = '%';
+		result = number1 % number2;
+		break;
+	default:
+		inputIsValid = false;
+	}
+
+	// Output
+	cout << "\nOUTPUT:" << endl;
+	if (inputIsValid) {
+		cout << number1 << " " << operationSign << " " << number2 << " = " << result << "\n" << endl;
+	}
+	else {
+		cout << "\nSomething went wrong. Please try again!" << endl;
+	}
+
+	system("pause");
+	return 0;
+}
