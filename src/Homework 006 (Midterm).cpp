@@ -1,80 +1,91 @@
+/******************************************************************
+Student Name:   Adil Iqbal
+Class:          6202-14454-COSC-1436
+Schedule:       Monday, Wednesday 11:00AM - 1:40PM
+
+Program 6 - Midterm Program
+EO-16-409
+Write a program that computes and displays the charges for a patient’s hospital stay. First, the program should ask if the patient was admitted as an inpatient or an outpatient. If the patient was an inpatient, the following data should be entered:
+
+  * The number of days spent in the hospital
+  * The daily rate
+  * Charges for hospital services (lab tests, etc.)
+  * Hospital medication charges
+     
+If the patient was an outpatient, the following data should be entered:
+
+  * Charges for hospital services (lab tests, etc.)
+  * Hospital medication charges
+
+Use a single, separate function to validate that no input is less than zero. If it is, it should be reentered before being returned. Once the required data has been input and validated, the program should use two overloaded functions to calculate the total charges. One of the functions should accept arguments for the inpatient data, while the other function accepts arguments for outpatient data. Both functions should return the total charges”
+******************************************************************/
+
 #include <iostream>
+#include <ctype.h>
 #include <string>
 using namespace std;
 
-// Function Declaration.
-void failSafe();
-double inputIsValid();
+// Function declaration
+double aboveZero(string prompt);
+double totalCost(double days, double dailyRate, double hospServ, double drugCost);
+double totalCost(double hospServ, double drugCost);
 
-int main()
+int main() 
 {
-	const int IN_PATIENT = 1;
-	const int OUT_PATIENT = 2;
+  // Variable declaration.
+  char resp;
+  double days = 0.0;
+  double dailyRate = 0.0;
+  double hospServ = 0.0;
+  double drugCost = 0.0;
+    
+  do // Inpatient or outpatient?
+  {
+    cout << "Were you admitted as inpatient? (Y or N): ";
+    cin >> resp;
+    resp = toupper(resp); // Allows 'n' and 'y' to be valid inputs.
+  } while (resp != 'Y' && resp != 'N');
 
-	string prompt;
-	signed int choice = -1;
+  if (resp == 'Y') // If inpatient...
+  {
+    days = aboveZero("How many days did you spend in the hospital? (Enter a number): ");
+    dailyRate = aboveZero("What was the daily rate? (Enter an dollar amount): ");
+  }
 
-	cout << "1. Inpatient" << endl;
-	cout << "2. Outpatient" << endl;
-	prompt = "How were you treated? (Enter 1 or 2): ";
+  /* The inputs below are common to both inpatient and outpatient cases. */
+  hospServ = aboveZero("What were the charges for hospital services? (Enter an dollar amount): ");
+  drugCost = aboveZero("What were the charges for medication? (Enter an dollar amount): ");
 
-	// See footnote #1.
-	choice = static_cast<int>(inputIsValid(static_cast<double>(choice), prompt));
-
-	cout << endl;
-
-	if (choice == IN_PATIENT)
-	{
-
-	}
-
-	else if (choice == OUT_PATIENT)
-	{
-
-	}
-
-	// See footnote #2.
-	else
-	{
-		cout << "Please try again. Enter either 1 or 2." << endl;
-		return 0;
-	}
-
-	cout << choice;
-	return 0;
+  if (resp == 'Y') // If inpatient...
+  {
+    cout << totalCost(days, dailyRate, hospServ, drugCost) << endl;
+    return 0;
+  }
+  
+  /* If inpatient, the main function will return before the code below is executed. */
+  cout << totalCost(hospServ, drugCost) << endl;
+  return 0;
 }
 
-double inputIsValid(double input, string prompt)
+// Validates that all inputs are above zero.
+double aboveZero(string prompt)
 {
-	do {
-		failSafe();
-		cout << prompt;
-		cin >> input;
-	} while (input < 0);
-
-	return input;
+  double variable;
+  do {
+    cout << prompt; 
+    cin >> variable;
+  } while (variable < 0);
+  return variable;
 }
 
-// See footnote #3
-void failSafe()
+// Outpatient overloaded function.
+double totalCost(double hospServ, double drugCost)
 {
-	if (cin.fail())
-	{
-
-	}
+  return hospServ + drugCost;
 }
 
-
-/*
--- Footnote 1 --
-This assignment requires that a single, separate function should validate that no input is less than zero. Since the choice variable is an integer and the input validation function expects a double and returns a double; my solution was to cast the choice integer as a double, and then cast the return value as an integer. In a real world senario, this particular statement may get its own do-while loop. Or perhaps, the input validation function would be overloaded so as to handle both integers and doubles.
-
--- Footnote 2 --
-Though the choice integer
-
-be less than zero, we cannot be sure that it will be either 1 or 2. Perhaps, the user may input a value of 99. This else statement will catch and handle that error.
-
--- Footnote 3 --
-Though this function was not required by the assignment, it was included to ensure that nonsense input by the user would not cause a stream failure.
-
-*/
+// Inpatient overloaded function.
+double totalCost(double days, double dailyRate, double hospServ, double drugCost)
+{
+  return days * dailyRate + hospServ + drugCost;
+}
